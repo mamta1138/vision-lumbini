@@ -5,7 +5,7 @@ const updateContactMessage = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const validStatuses = ["unread", "read", "response"];
+    const validStatuses = ["unread", "read", "responded"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status value" });
     }

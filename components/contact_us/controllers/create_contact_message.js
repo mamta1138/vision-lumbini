@@ -1,7 +1,6 @@
 const Contact = require("../models/contact_us_model");
 const contactUsValidator = require("../helper/contact_message_validator");
 
-// Create a new contact message
 const createContactMessage = async (req, res) => {
   try {
     const { error, value } = contactUsValidator.validate(req.body);

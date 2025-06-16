@@ -9,6 +9,13 @@ const subscriberValidation = Joi.object({
     .messages({
       "string.empty": "Email is required",  
       "string.pattern.base": "Please provide a valid email address",  
+    }),
+
+    status: Joi.string()
+    .valid("read", "unread", "pending")
+    .default("pending")
+    .messages({
+      "any.only": "Status must be one of: read, unread, or pending"
     })
 });
 

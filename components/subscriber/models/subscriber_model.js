@@ -8,9 +8,14 @@ const subscriberSchema = new mongoose.Schema(
       unique: true,
       trim: true,
       lowercase: true
+    },
+    status: {
+      type: String,
+      enum: ["read", "unread", "pending"],
+      default: "pending"
     }
   },
-  { timestamps: true }  
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Subscriber", subscriberSchema);

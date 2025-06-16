@@ -16,7 +16,7 @@ router.get("/", verifyToken, checkRole("admin", "editor"), listAllContactMessage
 
 router.get("/:id", verifyToken, checkRole("admin", "editor"), getSingleContactMessage);
 
-router.put("/:id", updateContactMessage);
+router.put("/:id", verifyToken, checkRole("admin", "editor"), updateContactMessage);
 
 router.delete("/:id", verifyToken, checkRole("admin"), deleteContactMessage);
 

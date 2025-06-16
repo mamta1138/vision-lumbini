@@ -8,14 +8,14 @@ const createSubscriber = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const { email } = value;  
+    const { email } = value;
 
     const existingSubscriber = await Subscriber.findOne({ email });
     if (existingSubscriber) {
       return res.status(400).json({ message: "Email already subscribed" });
     }
 
-    const newSubscriber = new Subscriber({ email });
+    const newSubscriber = new Subscriber(value);
     await newSubscriber.save();
 
     return res.status(201).json({

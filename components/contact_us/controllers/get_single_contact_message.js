@@ -1,6 +1,5 @@
 const Contact = require("../models/contact_us_model");
 
-// Get a single contact message by ID
 const getSingleContactMessage = async (req, res) => {
   try {
     const { id } = req.params;

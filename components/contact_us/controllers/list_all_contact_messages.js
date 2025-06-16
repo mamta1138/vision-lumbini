@@ -8,17 +8,23 @@ const listAllContactMessages = async (req, res) => {
     const sortOrder = req.query.sort === "asc" ? 1 : -1; 
 
     const search = req.query.search || "";
+    const status = req.query.status || "";
 
-    const searchQuery = search
-      ? { name: { $regex: search, $options: "i" } }
-      : {}; 
+    const searchQuery = {};
+
+    if (search) {
+      searchQuery.fullname = { $regex: search, $options: "i" };
+    }
+
+    if (status) {
+      searchQuery.status = status;
+    }
 
     const messages = await Contact.find(searchQuery)
       .sort({ createdAt: sortOrder })
       .skip(skip)
       .limit(limit)
       .lean();
-
 
 
     const totalMessages = await Contact.countDocuments(searchQuery);

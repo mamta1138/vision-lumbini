@@ -8,9 +8,12 @@ const listAllTeamMembers = async (req, res) => {
     const sortOrder = req.query.sort === "asc" ? 1 : -1; 
 
     const search = req.query.search || "";
-    const searchQuery = search
-      ? { name: { $regex: search, $options: "i" } }
-      : {};
+    const status = req.query.status || "";
+
+    const searchQuery = {
+      ...(search && { name: { $regex: search, $options: "i" } }),
+      ...(status && { status })
+    };
 
     const members = await Team.find(searchQuery)
       .sort({ createdAt: sortOrder }) 

@@ -1,5 +1,6 @@
 const Blog = require("../models/blog_model");
 const Category = require("../../category/models/category_model");
+const Tag = require("../../tag/models/tag_model");
 
 const listAllBlogs = async (req, res) => {
   try {
@@ -11,24 +12,42 @@ const listAllBlogs = async (req, res) => {
     const search = req.query.search || "";
     const status = req.query.status || "";
     const category = req.query.category || "";
-    const tag = req.query.tag || "";
+    const tagName = req.query.tag || "";
     const is_featured = req.query.is_featured; 
+
+    let tagFilter = {};
+    if (tagName) {
+      const tagDoc = await Tag.findOne({
+        name: { $regex: tagName, $options: "i" } 
+      });
+
+      if (!tagDoc) {
+        return res.status(400).json({ message: "Tag not found" });
+      }
+
+      tagFilter = { tags: tagDoc._id };
+    }
 
     let categoryFilter = {};
     if (category) {
-      const catItem = await Category.findOne({ name: category });
+      const catItem = await Category.findOne({
+        name: { $regex: category, $options: "i" } 
+      });
+
       if (!catItem) {
         return res.status(400).json({ message: "Category not found" });
       }
+
       categoryFilter = { categories: catItem._id };
     }
+
 
     const searchQuery = {
       title: { $regex: search, $options: "i" },
       ...(status && { status }),
-      ...(tag && { tags: tag }),
       ...(is_featured !== undefined && { is_featured: is_featured === "true" }), 
       ...categoryFilter,
+      ...tagFilter,
     };
 
     const blogs = await Blog.find(searchQuery)

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../../users/models/user_model");
 
 const refreshTokenController = async (req, res) => {
   try {
@@ -8,12 +9,20 @@ const refreshTokenController = async (req, res) => {
       return res.status(401).json({ message: "Refresh token is required" });
     }
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err, decoded) => {
       if (err) {
         return res.status(403).json({ message: "Invalid or expired refresh token" });
       }
 
-      const payload = { unique_id: decoded.unique_id, role: decoded.role };
+      const user = await User.findOne({ unique_id: decoded.unique_id });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const payload = {
+        unique_id: user.unique_id,
+        role: user.role
+      };
 
       const accessToken = jwt.sign(
         payload,
@@ -22,7 +31,7 @@ const refreshTokenController = async (req, res) => {
       );
 
       const newRefreshToken = jwt.sign(
-        { unique_id: decoded.unique_id },
+        { unique_id: user.unique_id }, 
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" }
       );
@@ -30,6 +39,8 @@ const refreshTokenController = async (req, res) => {
       return res.status(200).json({
         accessToken,
         refreshToken: newRefreshToken,
+        userId: user._id,
+        role: user.role, 
       });
     });
 

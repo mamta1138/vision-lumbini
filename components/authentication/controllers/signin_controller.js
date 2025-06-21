@@ -21,7 +21,7 @@ const loginUser = async (req, res) => {
     }
 
     if (!user.is_security_qxn_added) {
-      return res.status(401).json({
+      return res.status(200).json({
         message: "Please set your security questions.",
         firstTimeLogin: true
       });
@@ -38,7 +38,8 @@ const loginUser = async (req, res) => {
     );
 
     const refreshToken = jwt.sign(
-      { unique_id: user.unique_id },
+      { unique_id: user.unique_id,
+      role: user.role  },
       process.env.REFRESH_TOKEN_SECRET,
       { expiresIn: "7d" }
     );
@@ -48,14 +49,15 @@ const loginUser = async (req, res) => {
 
     return res.status(200).json({
       message: "Login successful",
-      userId: user._id,          
+      userId: user._id,
+      role: user.role,          
       accessToken,
       refreshToken
     });
-    
+
   } catch (error) {
     console.error("Login error:", error);
-    return res.status(500).json({ message: "Server error during login", error });
+    return res.status(500).json({ message: "Server error during login" });
   }
 };
 

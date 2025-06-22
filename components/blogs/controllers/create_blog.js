@@ -25,11 +25,14 @@ const createBlog = async (req, res) => {
 
     const slug = slugify(value.title, { lower: true });
 
+    const userId = req.user?._id 
+
     const newBlog = new Blog({
       ...value,
       slug,
       image_url,
-      gallery
+      gallery,
+      author: userId, 
     });
 
     await newBlog.save();

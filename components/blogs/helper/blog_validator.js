@@ -10,9 +10,6 @@ const blogValidation = Joi.object({
     "string.empty": "Content is required",
     "string.min": "Content must be at least 20 characters"
   }),
-  author: Joi.string().required().messages({
-    "string.empty": "Author is required"
-  }),
   categories: Joi.string().required().messages({
     "any.required": "At least one category is required"
   }),

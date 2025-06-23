@@ -51,7 +51,6 @@ const listAllBlogs = async (req, res) => {
     };
 
     const blogs = await Blog.find(searchQuery)
-      .populate("author", "fullname email")
       .populate("categories", "name slug")
       .populate("tags", "name slug")
       .sort({ createdAt: sortOrder })

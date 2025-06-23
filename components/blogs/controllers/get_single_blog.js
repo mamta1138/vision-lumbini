@@ -5,7 +5,6 @@ const getSingleBlog = async (req, res) => {
     const { id } = req.params;
 
     const blog = await Blog.findById(id)
-      .populate("author", "fullname email")
       .populate("categories", "name slug")
       .populate("tags", "name slug");
 

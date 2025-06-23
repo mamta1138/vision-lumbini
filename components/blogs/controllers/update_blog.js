@@ -30,7 +30,6 @@ const updateBlog = async (req, res) => {
       new: true,
       runValidators: true,
     })
-      .populate("author", "fullname email")
       .populate("categories", "name slug")
       .populate("tags", "name slug");
 

@@ -34,7 +34,7 @@ const loginUser = async (req, res) => {
         role: user.role
       },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
+      { expiresIn: process.env.JWT_EXPIRES_IN || "7d" }
     );
 
     const refreshToken = jwt.sign(

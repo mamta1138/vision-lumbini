@@ -4,7 +4,7 @@ const listAllReports = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    const status = req.query.status || "approved";
+    const status = req.query.status ;
     const skip = (page - 1) * limit;
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
 

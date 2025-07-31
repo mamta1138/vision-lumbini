@@ -10,7 +10,6 @@ const getSingleTeamMember = require("../controllers/get_single_team_member");
 const { updateTeamMember } = require("../controllers/update_team_member");
 const deleteTeamMember = require("../controllers/delete_team_member");
 
-
 router.post("/", verifyToken, checkRole("admin", "editor"), upload.single("photo"), createTeamMember);
 router.get("/:id", getSingleTeamMember);
 router.get("/", listAllTeamMembers);

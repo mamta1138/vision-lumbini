@@ -9,7 +9,7 @@ const testimonialSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Testimonial message is required"],
+      required: [true, "Description is required"],
       trim: true,
       maxlength: [1000, "Description must be at most 1000 characters"],
     },

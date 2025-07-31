@@ -1,6 +1,13 @@
 const Tag = require("../models/tag_model");
-const slugify = require("slugify");
 const tagValidator = require("../helper/tag_validator");
+
+const generateNepaliSlug = (text) => {
+  return text
+    .trim()
+    .replace(/[।.,/#!$%^&*;:{}=_~()]/g, '')
+    .replace(/\s+/g, '-')
+    .toLowerCase();
+};
 
 const createTag = async (req, res) => {
   try {
@@ -11,19 +18,30 @@ const createTag = async (req, res) => {
 
     const { name } = value;
 
-    const existing = await Tag.findOne({ name });
-    if (existing) {
+    const existingTag = await Tag.findOne({ name });
+    if (existingTag) {
       return res.status(400).json({ message: "Tag already exists" });
     }
 
-    const slug = slugify(name, { lower: true });
-    const newTag = new Tag({ name, slug });
+    let generatedSlug = generateNepaliSlug(name);
+    if (!generatedSlug) {
+      generatedSlug = `tag-${Date.now()}`;
+    }
+
+    const newTag = new Tag({
+      name,
+      slug: generatedSlug,
+    });
+
     await newTag.save();
 
-    return res.status(201).json({ message: "Tag created", tag: newTag });
+    return res.status(201).json({
+      message: "Tag created successfully",
+      tag: newTag,
+    });
   } catch (error) {
     console.error("Create Tag Error:", error);
-    return res.status(500).json({ message: "Server error while creating tag" });
+    return res.status(500).json({ message: "Failed to create tag" });
   }
 };
 

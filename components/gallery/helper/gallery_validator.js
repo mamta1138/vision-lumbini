@@ -1,9 +1,7 @@
 const Joi = require("joi");
 
 const galleryValidation = Joi.object({
-  title: Joi.string().min(5).max(100).required().messages({
-    "string.empty": "Title is required",
-    "string.min": "Title must be at least 5 characters",
+  title: Joi.string().max(100).allow(null, "").messages({
     "string.max": "Title must not exceed 100 characters",
   }),
   type: Joi.string().valid("image", "video").required().messages({

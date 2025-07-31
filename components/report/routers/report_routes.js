@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+
 const verifyToken = require("../../../middleware/verify_token");
 const checkRole = require("../../../middleware/check_role");
 
@@ -16,7 +17,7 @@ router.get("/", listAllReports);
 
 router.get("/:id", getSingleReport);
 
-router.put("/:id", verifyToken, checkRole("admin", "editor"), upload.single("file"), updateReport);
+router.put("/:id", verifyToken, checkRole("admin", "editor"), upload.single("file"),  updateReport);
 
 router.delete("/:id", verifyToken, checkRole("admin"), deleteReport);
 

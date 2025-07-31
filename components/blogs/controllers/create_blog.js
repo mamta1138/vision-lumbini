@@ -1,10 +1,17 @@
 const Blog = require("../models/blog_model");
-const slugify = require("slugify");
 const blogValidation = require("../helper/blog_validator");
+
+const generateNepaliSlug = (text) => {
+  return text
+    .trim()
+    .replace(/[।.,/#!$%^&*;:{}=_~()]/g, '')  
+    .replace(/\s+/g, '-')                      
+    .toLowerCase();                           
+};
 
 const createBlog = async (req, res) => {
   try {
-   
+
     const { error, value } = blogValidation.validate(req.body);
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
@@ -14,21 +21,23 @@ const createBlog = async (req, res) => {
     if (existingBlog) {
       return res.status(400).json({ message: "A blog with this title already exists." });
     }
-    
+
     const uploadedImages = req.files?.image || [];
     if (uploadedImages.length === 0) {
       return res.status(400).json({ message: "At least one image is required" });
     }
 
-    const image_url = uploadedImages[0].path; 
-    const gallery = uploadedImages.slice(1).map(file => file.path); 
+    const image_url = uploadedImages[0].path;
+    const gallery = uploadedImages.slice(1).map((file) => file.path);
 
-    const slug = slugify(value.title, { lower: true });
-
+    let generatedSlug = generateNepaliSlug(value.title);
+    if (!generatedSlug) {
+      generatedSlug = `blog-${Date.now()}`;
+    }
 
     const newBlog = new Blog({
       ...value,
-      slug,
+      slug: generatedSlug,
       image_url,
       gallery,
     });

@@ -1,6 +1,8 @@
 const Testimonial = require("../models/testimonial_model");
 const testimonialValidator = require("../helper/testimonial_validator");
-
+const multer = require("multer");
+const { storage } = require("../../../config/cloudinary");
+const upload = multer({ storage });
 
 const updateTestimonial = async (req, res) => {
   try {
@@ -16,16 +18,17 @@ const updateTestimonial = async (req, res) => {
       return res.status(404).json({ message: "Testimonial not found" });
     }
 
-  
-    testimonial.set({ ...value });
+    const photo_url = req.file?.path || testimonial.photo_url;
 
-
-    testimonial.status = "pending";
+    testimonial.set({
+      ...value,
+      photo_url,
+    });
 
     await testimonial.save();
 
     return res.status(200).json({
-      message: "Testimonial updated successfully. Awaiting admin approval.",
+      message: "Testimonial updated successfully.",
       testimonial,
     });
   } catch (error) {
@@ -34,4 +37,4 @@ const updateTestimonial = async (req, res) => {
   }
 };
 
-module.exports = updateTestimonial;
+module.exports = { updateTestimonial, upload };

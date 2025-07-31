@@ -1,14 +1,12 @@
 const Joi = require("joi");
 
 const blogValidation = Joi.object({
-  title: Joi.string().min(5).max(150).required().messages({
+  title: Joi.string().max(150).required().messages({
     "string.empty": "Title is required",
-    "string.min": "Title must be at least 5 characters",
     "string.max": "Title must not exceed 150 characters"
   }),
-  content: Joi.string().min(20).required().messages({
+  content: Joi.string().required().messages({
     "string.empty": "Content is required",
-    "string.min": "Content must be at least 20 characters"
   }),
   categories: Joi.string().required().messages({
     "any.required": "At least one category is required"

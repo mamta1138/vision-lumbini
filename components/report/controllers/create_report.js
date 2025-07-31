@@ -1,5 +1,6 @@
 const Report = require("../models/report_model");
 const reportValidator = require("../helper/report_validator");
+const path = require("path");
 const multer = require("multer");
 const { storage } = require("../../../config/cloudinary");
 const upload = multer({ storage });
@@ -13,13 +14,31 @@ const createReport = async (req, res) => {
 
     const existingReport = await Report.findOne({ title: value.title });
     if (existingReport) {
-      return res.status(409).json({ message: "A report with this title already exists." });
+      return res.status(409).json({ message: "A report with this title already exists. Please choose different name." });
     }
 
     const fileUrl = req.file?.path || "";
+    const originalName = req.file?.originalname;
+    const fileSize = req.file?.size;
 
-    if (!fileUrl) {
-      return res.status(400).json({ message: '"file" is required' });
+    if (!fileUrl || !originalName || !fileSize) {
+      return res.status(400).json({ message: '"file" is required.' });
+    }
+
+    const ext = path.extname(originalName).toLowerCase();
+    const allowedExt = ".pdf";
+    const maxSize = 5 * 1024 * 1024; 
+
+    if (ext !== allowedExt) {
+      return res.status(400).json({
+        message: "Invalid file type. Only PDF files are allowed.",
+      });
+    }
+
+    if (fileSize > maxSize) {
+      return res.status(400).json({
+        message: "File size must be 5MB or less.",
+      });
     }
 
     const newReport = new Report({

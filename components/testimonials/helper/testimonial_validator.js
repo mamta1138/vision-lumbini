@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const testimonialValidator = Joi.object({
   full_name: Joi.string()
-    .max(200)
+    .max(100)
     .required()
     .messages({
       "string.empty": "Full name is required",
@@ -13,8 +13,8 @@ const testimonialValidator = Joi.object({
     .max(1000)
     .required()
     .messages({
-      "string.empty": "Description is required",
-      "string.max": "Description must be at most 1000 characters",
+      "string.empty": "Testimonial message is required",
+      "string.max": "Message must be at most 1000 characters"
     }),
 
   photo_url: Joi.string()
@@ -23,7 +23,8 @@ const testimonialValidator = Joi.object({
     .messages({
       "string.uri": "Photo must be a valid URL",
     }),
-    status: Joi.string().valid("pending", "approved").default("pending")
+
+  status: Joi.string().valid("pending", "approved").default("pending")
 });
 
 module.exports = testimonialValidator;

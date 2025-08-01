@@ -9,7 +9,6 @@ const listAllTestimonials = require("../controllers/list_all_testimonials");
 const getSingleTestimonial = require("../controllers/get_single_testimonial");
 const { updateTestimonial } = require("../controllers/update_testimonial");
 const deleteTestimonial = require("../controllers/delete_testimonial");
-// const verifyTestimonial = require("../controllers/verify_testimonial"); 
 
 router.post("/", verifyToken, checkRole("editor", "admin"), upload.single("photo"), createTestimonial);
 
@@ -17,10 +16,8 @@ router.get("/", listAllTestimonials);
 
 router.get("/:id", getSingleTestimonial);
 
-router.put("/:id", verifyToken, checkRole("editor", "admin"), upload.single("photo"), updateTestimonial);
+router.put("/:id", verifyToken, checkRole("editor", "admin"),upload.single("photo"), updateTestimonial);
 
 router.delete("/:id", verifyToken, checkRole("admin"), deleteTestimonial);
-
-// router.put("/verify/:id", verifyToken, checkRole("admin"), verifyTestimonial);
 
 module.exports = router;

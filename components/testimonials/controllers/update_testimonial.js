@@ -20,10 +20,10 @@ const updateTestimonial = async (req, res) => {
 
     const photo_url = req.file?.path || testimonial.photo_url;
 
-    testimonial.set({
+
+    testimonial.set({      
       ...value,
-      photo_url,
-    });
+      photo_url });
 
     await testimonial.save();
 
@@ -37,4 +37,4 @@ const updateTestimonial = async (req, res) => {
   }
 };
 
-module.exports = { updateTestimonial, upload };
+module.exports = {updateTestimonial};

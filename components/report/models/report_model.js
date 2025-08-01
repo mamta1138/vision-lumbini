@@ -18,7 +18,8 @@ const reportSchema = new mongoose.Schema(
     },
     quarter: {
       type: String,
-      enum: ["Quarter-1", "Quarter-2", "Quarter-3", "Quarter-4"],
+      enum: ["Quarter-1", "Quarter-2", "Quarter-3", "Quarter-4", ""],
+      allowNull: true
     },
     
     file: { 

@@ -7,12 +7,14 @@ const getAllPartners = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const sortOrder = req.query.sort === "asc" ? 1 : -1;
-    const status = req.query.status || "";
-    const searchQuery = {};
 
-    if (status) {
-      searchQuery.status = { $regex: status, $options: "i" };
-    }
+    const search = req.query.search || "";
+    const status = req.query.status || "";
+
+    const searchQuery = {
+      ...(search && { name: { $regex: search, $options: "i" } }),
+      ...(status && { status })
+    };
 
     const partners = await Partner.find(searchQuery)
       .sort({ createdAt: sortOrder })

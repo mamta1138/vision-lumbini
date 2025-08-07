@@ -11,7 +11,7 @@ const deletePartner = require("../controllers/delete_partner");
 
 router.post("/",verifyToken, checkRole("admin", "editor"), upload.single("image"), createPartner);
 router.get("/", getAllPartners);
-router.put("/:id",verifyToken, checkRole("admin", "editor"), updatePartner);
+router.put("/:id",verifyToken, checkRole("admin", "editor"), upload.single("image"), updatePartner);
 router.delete("/:id",verifyToken, checkRole("admin", "editor"), deletePartner);
 
 

@@ -36,8 +36,8 @@ const registerValidation = Joi.object({
     .optional()
     .messages({
       'any.only': 'Role must be admin, editor, or subscriber'
-    })
-
+    }),
+  is_security_qxn_added: Joi.boolean().default(false)
 });
 
 module.exports = registerValidation;

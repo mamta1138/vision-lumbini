@@ -20,8 +20,7 @@ const registerUser = async (req, res) => {
     const newUser = new User({
       ...value, 
       password: hashedPassword, 
-      is_security_qxn_added: false,  
-      securityQuestionsUpdatedAt: null 
+
     });
 
     await newUser.save();

@@ -4,7 +4,7 @@ const partnerSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      optional: true,
+      required: true,
       trim: true,
     },
     image: {

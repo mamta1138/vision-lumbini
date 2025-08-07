@@ -54,20 +54,5 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-userSchema.pre('save', function(next) {
-  if (this.is_security_qxn_added) {
-
-    if (!this.securityQuestions || this.securityQuestions.length !== 3) {
-      return next(new Error("You must provide exactly 3 security questions and answers."));
-    }
-
-    this.securityQuestions.forEach((item) => {
-      item.answer = item.answer.trim(); 
-    });
-
-    this.securityQuestionsUpdatedAt = new Date();
-  }
-  next();
-});
 
 module.exports = mongoose.model('User', userSchema);

@@ -1,13 +1,6 @@
 const Category = require("../models/category_model");
+const slugify = require("slugify");
 const categoryValidation = require("../helper/category_validator");
-
-const generateNepaliSlug = (text) => {
-  return text
-    .trim()
-    .replace(/[।.,/#!$%^&*;:{}=_~()]/g, '')
-    .replace(/\s+/g, '-')
-    .toLowerCase();
-};
 
 const createCategory = async (req, res) => {
   try {
@@ -21,15 +14,12 @@ const createCategory = async (req, res) => {
       return res.status(400).json({ message: "Category already exists" });
     }
 
-    let slug = generateNepaliSlug(value.name);
-    if (!slug) {
-      slug = `category-${Date.now()}`;
-    }
+    const slug = slugify(value.name, { lower: true });
 
     const categoryData = {
       name: value.name,
       slug,
-      parent: value.parent || null,
+      parent: value.parent || null, // parent is optional
     };
 
     const newCategory = new Category(categoryData);

@@ -14,6 +14,6 @@ router.post("/", verifyToken, checkRole("admin", "editor"), upload.single("photo
 router.get("/:id", getSingleTeamMember);
 router.get("/", listAllTeamMembers);
 router.put("/:id", verifyToken, checkRole("admin", "editor"), upload.single("photo"), updateTeamMember);
-router.delete("/:id", verifyToken, checkRole("admin"), deleteTeamMember);
+router.delete("/:id", verifyToken, checkRole("admin", "editor"), deleteTeamMember);
 
 module.exports = router;

@@ -78,11 +78,11 @@ const createGallery = async (req, res) => {
   } catch (err) {
     console.error("Create Gallery Error:", err);
 
-    // if (err.code === 11000 && err.keyPattern?.title) {
-    //   return res.status(409).json({
-    //     message: "Gallery title must be unique. This title already exists.",
-    //   });
-    // }
+    if (err.code === 11000 && err.keyPattern?.title) {
+      return res.status(409).json({
+        message: "Gallery title must be unique. This title already exists.",
+      });
+    }
 
     return res.status(500).json({
       message: "Internal Server Error: Unable to create gallery.",

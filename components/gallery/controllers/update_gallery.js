@@ -24,11 +24,11 @@ const updateGallery = async (req, res) => {
 
     if (value.title && value.title !== gallery.title) {
       const existing = await Gallery.findOne({ title: value.title });
-      // if (existing) {
-      //   return res.status(409).json({
-      //     message: "A gallery with this title already exists. Please choose a different title.",
-      //   });
-      // }
+      if (existing) {
+        return res.status(409).json({
+          message: "A gallery with this title already exists. Please choose a different title.",
+        });
+      }
       gallery.title = value.title;
     }
 
